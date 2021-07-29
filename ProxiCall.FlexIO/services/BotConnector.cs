@@ -16,29 +16,25 @@ namespace ProxiCall.FlexIO.services
         private DirectLineClient _directLineClient;
         public readonly string _conversationId;
         private readonly string _streamUrl;
-        private readonly string _callSid;
-        private readonly string _fromNumber;
         private readonly DirectlineConfig _directlineConfig;
 
         public delegate Task OnReplyHandler(IList<Activity> botReplies, string callSid);
 
-        public BotConnector(DirectlineConfig directlineConfig, string callSid)
+        public BotConnector(DirectlineConfig directlineConfig)
         {
             _directlineConfig = directlineConfig;
             _directLineClient = new DirectLineClient(_directlineConfig.DirectlineSecret);
             var conversation = _directLineClient.Conversations.StartConversation();
             _conversationId = conversation.ConversationId;
             _streamUrl = conversation.StreamUrl;
-            _callSid = callSid;
         }
-        public BotConnector(DirectlineConfig directlineConfig, string callSid, string conversationId)
+        public BotConnector(DirectlineConfig directlineConfig, string conversationId)
         {
             _directlineConfig = directlineConfig;
             _directLineClient = new DirectLineClient(_directlineConfig.DirectlineSecret);
             var conversation = _directLineClient.Conversations.ReconnectToConversation(conversationId);
             _conversationId = conversation.ConversationId;
             _streamUrl = conversation.StreamUrl;
-            _callSid = callSid;
         }
 
         public async Task<List<Activity>> ReceiveMessagesFromBotAsync()
@@ -46,9 +42,8 @@ namespace ProxiCall.FlexIO.services
             var webSocket = new ClientWebSocket();
             await webSocket.ConnectAsync(new Uri(_streamUrl), CancellationToken.None);
 
-
             string botReply = String.Empty;
-            var replyBuffer = ClientWebSocket.CreateClientBuffer(1024 * 8, 1024 * 8);
+            var replyBuffer = WebSocket.CreateClientBuffer(1024 * 8, 1024 * 8);
 
             var activities = new List<Activity>();
 

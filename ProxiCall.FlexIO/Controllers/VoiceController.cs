@@ -30,17 +30,17 @@ namespace ProxiCall.FlexIO.Controllers
         }
 
         [HttpPost("receive")]
-        public async Task<IActionResult> ReceiveCall([FromForm] string CallSid, [FromForm] string CallStatus, [FromForm] string From, [FromForm] string SpeechResult)
+        public async Task<IActionResult> ReceiveCall([FromForm] string CallStatus, [FromForm] string From, [FromForm] string SpeechResult)
         {
             var conversationId = _conversationIdService.GetConversationIdByFrom(From);
             if (conversationId == null)
             {
-                _botConnector = new BotConnector(_directlineConfig, CallSid);
+                _botConnector = new BotConnector(_directlineConfig);
                 _conversationIdService.AddConversationIdByFrom(_botConnector._conversationId, From);
             }
             else
             {
-                _botConnector = new BotConnector(_directlineConfig, CallSid, conversationId);
+                _botConnector = new BotConnector(_directlineConfig, conversationId);
             }
 
             var activity = new Activity
