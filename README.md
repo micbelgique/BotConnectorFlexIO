@@ -15,3 +15,8 @@ In [VoiceController](https://github.com/micbelgique/BotConnectorFlexIO/blob/mast
 ## How it's working?
 
 ![schema of the system](https://github.com/micbelgique/BotConnectorFlexIO/blob/master/schema.png)
+
+## More about FlexIO?
+
+[Docs of FlexIO](https://proximusflexio.enco.io/docs/)
+[Want to create new app on FlexIO](https://proximusflexio.enco.io/docs/tutorials/Create-a-Voicemail-to-Email-app-with-zero-coding.html)
